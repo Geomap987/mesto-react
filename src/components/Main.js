@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-
 import { api } from '../utils/Api.js';
 import Card from './Card.js';
 
 function Main(props) {
-    const [userName, setUserName] = React.useState();
-    const [userDescription, setUserDescription] = React.useState();
-    const [userAvatar, setUserAvatar] = React.useState();
+    const [userName, setUserName] = React.useState('');
+    const [userDescription, setUserDescription] = React.useState('');
+    const [userAvatar, setUserAvatar] = React.useState('');
     const [cards, setCards] = React.useState([]);
 
     useEffect(() => {
@@ -17,20 +16,22 @@ function Main(props) {
                 setUserName(info.name);
                 setUserDescription(info.about);
                 setUserAvatar(info.avatar)
-            })
+            }).catch((err) => console.log(err));
     }, [])
 
     useEffect(() => {
         api.getCardList().then(
             (res) => { 
+                console.log(res)
                 const items = res.map(item => ({
                     title: item.name,
                     link: item.link,
-                    likesNumber: item.likes.length
+                    likesNumber: item.likes.length,
+                    id: item._id
                 }))
                 setCards(items)
                 
-            })
+            }).catch((err) => console.log(err));
             
     }, [])
 
@@ -56,7 +57,7 @@ function Main(props) {
             </section>
             <section className="photo-grid">
                 <div className="photo-grid__container">
-                    {cards.map(card => <Card title={card.title} link={card.link} likesNumber={card.likesNumber} onCardClick={props.mainCardClick} item={card}/>)}
+                    {cards.map(card => <Card key={card.id} title={card.title} link={card.link} likesNumber={card.likesNumber} onCardClick={props.mainCardClick} item={card} />)}
                 </div>
             </section>
         </main>
