@@ -1,63 +1,31 @@
-import React, { useEffect } from 'react';
-import { api } from '../utils/Api.js';
+import React from 'react';
 import Card from './Card.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Main(props) {
-    const [userName, setUserName] = React.useState('');
-    const [userDescription, setUserDescription] = React.useState('');
-    const [userAvatar, setUserAvatar] = React.useState('');
-    const [cards, setCards] = React.useState([]);
-
-    useEffect(() => {
-        api.getUserInfo().then(
-            (res) => { 
-                const info = res; 
-                
-                setUserName(info.name);
-                setUserDescription(info.about);
-                setUserAvatar(info.avatar)
-            }).catch((err) => console.log(err));
-    }, [])
-
-    useEffect(() => {
-        api.getCardList().then(
-            (res) => { 
-                console.log(res)
-                const items = res.map(item => ({
-                    title: item.name,
-                    link: item.link,
-                    likesNumber: item.likes.length,
-                    id: item._id
-                }))
-                setCards(items)
-                
-            }).catch((err) => console.log(err));
-            
-    }, [])
-
-    
+    const currentUser = React.useContext(CurrentUserContext);
 
     return (
         <main className="content">
             <section className="profile">
                 <div className="profile__wrapper">
                     <div className="profile__photo-wrapper">
-                        <img className="profile__photo" src={userAvatar} alt="Фотография профиля" />
+                        <img className="profile__photo" src={currentUser.avatar} alt="Фотография профиля" />
                         <div onClick={props.onEditAvatar} className="profile__edit-pen"></div>
                     </div>
                     <div className="profile__text-container">
                         <div className="profile__button-wrapper">
-                            <h1 className="profile__title">{userName}</h1>
+                            <h1 className="profile__title">{currentUser.name}</h1>
                             <button onClick={props.onEditProfile} type="button" className="profile__edit-button" ></button>
                         </div>
-                        <p className="profile__subtitle">{userDescription}</p>
+                        <p className="profile__subtitle">{currentUser.about}</p>
                     </div>
                 </div>
-                <button onClick={props.onAddPlace} type="button" className="profile__add-button"></button>
+                <button onClick={props.openAddPlace} type="button" className="profile__add-button"></button>
             </section>
             <section className="photo-grid">
                 <div className="photo-grid__container">
-                    {cards.map(card => <Card key={card.id} title={card.title} link={card.link} likesNumber={card.likesNumber} onCardClick={props.mainCardClick} item={card} />)}
+                    {props.cards.map(card => <Card onCardDelete={props.onCardDelete} onCardLike={props.onCardLike} isLiked={card.likes.some(i => i._id === currentUser._id)} isOwn={card.owner._id === currentUser._id} key={card._id} title={card.name} link={card.link} likesNumber={card.likes.length} onCardClick={props.mainCardClick} item={card} />)}
                 </div>
             </section>
         </main>

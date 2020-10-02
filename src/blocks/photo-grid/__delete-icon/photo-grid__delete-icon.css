@@ -15,3 +15,7 @@
 .photo-grid__delete-icon:hover {
     opacity: .6;
 }
+
+.photo-grid__delete-icon_none {
+    display: none;
+}
