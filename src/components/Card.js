@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Card({ title, link, likesNumber, onCardClick, item, isOwn, isLiked, onCardLike, onCardDelete }) {
+function Card({ title, link, likesNumber, onCardClick, item, isOwn, isLiked, onCardLike, onCardDelete}) {
     function handleClick() {
         onCardClick(item);
     }

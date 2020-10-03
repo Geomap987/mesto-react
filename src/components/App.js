@@ -40,14 +40,14 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     api.likeCard(card._id, isLiked).then((newCard) => {
-      const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+      const newCards = cards.map((c) => c._id === card._id ? newCard : c).catch((err) => console.log(err));;
       setCards(newCards);
     });
   }
 
   function handleCardDelete(card) {
     api.deleteCard(card._id).then((newCard) => {
-      const newCards = cards.filter((c) => c._id !== card._id);
+      const newCards = cards.filter((c) => c._id !== card._id).catch((err) => console.log(err));;
       setCards(newCards);
     });
   }
@@ -80,8 +80,9 @@ function App() {
       (res) => {
         const info = res;
         setCurrentUser(info)
+        closeAllPopups()
       }).catch((err) => console.log(err));
-    closeAllPopups()
+
   }
 
   function handleUpdateAvatar(a) {
@@ -89,22 +90,22 @@ function App() {
       (res) => {
         const info = res;
         setCurrentUser(info)
+        closeAllPopups()
       }).catch((err) => console.log(err));
-    closeAllPopups()
   }
 
   function handleAddPlaceSubmit(a) {
     api.createCard(a).then(
       (newCard) => {
-        setCards([...cards, newCard]);
+        setCards([...cards, newCard])
+        closeAllPopups()
       }).catch((err) => console.log(err));
-    closeAllPopups()
+
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <CardContext.Provider value={cards}>
-
         <div className="page">
           <Header />
           <Main
@@ -117,15 +118,11 @@ function App() {
             cards={cards}
           />
           <Footer />
-
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
           <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
           <AddPlacePopup onClose={closeAllPopups} isOpen={isAddPlacePopupOpen} onAddPlace={handleAddPlaceSubmit} />
-          <PopupWithForm name={`confirm`} title={`Вы уверены?`}>
-            <button onClose={handleAddPlaceClick} type="submit" className="popup__submit-button">Да</button>
-          </PopupWithForm>
-          <PopupWithImage onClose={closeAllPopups} isOpen={selectedCard.link} image={selectedCard.link} title={selectedCard.title} />
-
+          <PopupWithForm name={`confirm`} title={`Вы уверены?`} buttonText={`Да`} />
+          <PopupWithImage onClose={closeAllPopups} isOpen={selectedCard.link} image={selectedCard.link} title={selectedCard.name} />
         </div>
       </CardContext.Provider>
     </CurrentUserContext.Provider>

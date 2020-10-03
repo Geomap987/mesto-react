@@ -27,12 +27,11 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     setDescription(currentUser.about);
   }, [currentUser]);
   return (
-    <PopupWithForm onSubmit={handleSubmit} onClose={onClose} isOpen={isOpen} name={`profile`} title={`Редактировать профиль`}>
-      <input onChange={handleName} type="text" id="profilename" name="name" placeholder="Имя" className="popup__input popup__input_title" pattern="[a-zA-ZА-ЯЁа-яё\s\-]+" minLength="2" maxLength="40" required />
+    <PopupWithForm onSubmit={handleSubmit} onClose={onClose} isOpen={isOpen} name={`profile`} title={`Редактировать профиль`} buttonText={`Сохранить`}>
+      <input onChange={handleName} type="text" id="profilename" name="name" placeholder="Имя" value={name} className="popup__input popup__input_title" pattern="[a-zA-ZА-ЯЁа-яё\s\-]+" minLength="2" maxLength="40" required />
       <span className="popup__input-error" id="profilename-error"></span>
-      <input onChange={handleDescription} type="text" id="profilejob" name="about" placeholder="Занятие" className="popup__input popup__input_subtitle" minLength="2" maxLength="200" required />
+      <input onChange={handleDescription} type="text" id="profilejob" name="about" placeholder="Занятие" value={description} className="popup__input popup__input_subtitle" minLength="2" maxLength="200" required />
       <span className='popup__input-error' id="profilejob-error"></span>
-      <button type="submit" className="popup__submit-button popup-profile__submit-button">Сохранить</button>
     </PopupWithForm>
   )
 }
