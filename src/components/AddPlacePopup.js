@@ -1,7 +1,7 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm.js';
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
+function AddPlacePopup({ isOpen, onClose, onAddPlace, titleR }) {
     const linkRef = React.useRef();
     const titleRef = React.useRef();
 
@@ -11,6 +11,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
             name: titleRef.current.value,
             link: linkRef.current.value
         });
+        
     }
 
     return (

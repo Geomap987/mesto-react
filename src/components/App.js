@@ -73,6 +73,7 @@ function App() {
     setEditProfilePopupOpen(false)
     setAddPlacePopupOpen(false)
     setSelectedCard({ title: '', link: '' })
+    
   }
 
   function handleUpdateUser(a) {
@@ -120,7 +121,7 @@ function App() {
           <Footer />
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
           <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-          <AddPlacePopup onClose={closeAllPopups} isOpen={isAddPlacePopupOpen} onAddPlace={handleAddPlaceSubmit} />
+          <AddPlacePopup titleR={''} onClose={closeAllPopups} isOpen={isAddPlacePopupOpen} onAddPlace={handleAddPlaceSubmit} />
           <PopupWithForm name={`confirm`} title={`Вы уверены?`} buttonText={`Да`} />
           <PopupWithImage onClose={closeAllPopups} isOpen={selectedCard.link} image={selectedCard.link} title={selectedCard.name} />
         </div>
